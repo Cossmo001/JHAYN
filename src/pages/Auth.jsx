@@ -65,6 +65,9 @@ export default function Auth() {
         {error && (
           <div className="mb-6 p-4 bg-red-900/20 border border-red-900/50 rounded-xl text-red-400 text-sm">
             {error}
+            <div className="mt-2 text-[10px] opacity-70 uppercase tracking-widest border-t border-red-900/30 pt-2">
+              Debug Info: {import.meta.env.VITE_SUPABASE_URL ? 'URL Found' : 'URL Missing'} | {import.meta.env.VITE_SUPABASE_ANON_KEY ? 'Key Found' : 'Key Missing'}
+            </div>
           </div>
         )}
 
