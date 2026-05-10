@@ -18,16 +18,9 @@ export default function MultiplayerLobby() {
     '4': { name: 'You', rank: 'Unranked', accuracy: '0%', best: 'N/A' }
   };
 
-  const publicLobbies = [
-    { id: '1', name: 'Tech Titans', players: ['1', '2'], max: 10, stats: 'Avg Rank: Silver' },
-    { id: '2', name: 'Code Crackers', players: ['3'], max: 10, stats: 'Avg Rank: Platinum' },
-    { id: '3', name: 'Network Ninjas', players: [], max: 5, stats: 'Avg Rank: N/A' },
-  ];
+  const publicLobbies = [];
 
-  const joinedLobbies = [
-    { id: 'j1', name: 'Study Group Alpha', code: 'A1B2C3', type: 'private' },
-    { id: 'j2', name: 'Tech Titans', code: '', type: 'public' }
-  ];
+  const joinedLobbies = [];
 
   if (view === 'userProfile' && selectedUser) {
     const u = mockUsers[selectedUser];
@@ -164,15 +157,17 @@ export default function MultiplayerLobby() {
       <div className="flex flex-col items-center pt-8 w-full animate-in fade-in duration-300">
         <div className="w-full max-w-4xl flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-white mb-1">Cosmos Lobby</h2>
+            <h2 className="text-3xl font-bold text-white mb-1">{createLobbyName || 'Cosmos Lobby'}</h2>
             <div className="flex items-center gap-4 text-sm">
-               <span className="bg-blue-900/40 text-blue-400 px-2 py-0.5 rounded border border-blue-900/50">Private</span>
-               <div className="flex items-center gap-2 bg-gray-900 px-3 py-1 rounded text-gray-300 border border-gray-800">
-                 Code: <strong className="text-white tracking-widest">X7Y9Z1</strong>
-                 <button className="text-gray-500 hover:text-white transition-colors" title="Copy Code">
-                   <Copy className="w-4 h-4" />
-                 </button>
-               </div>
+               <span className="bg-blue-900/40 text-blue-400 px-2 py-0.5 rounded border border-blue-900/50">{lobbyType === 'private' ? 'Private' : 'Public'}</span>
+               {lobbyType === 'private' && (
+                 <div className="flex items-center gap-2 bg-gray-900 px-3 py-1 rounded text-gray-300 border border-gray-800">
+                   Code: <strong className="text-white tracking-widest">X7Y9Z1</strong>
+                   <button onClick={() => { navigator.clipboard.writeText('X7Y9Z1'); alert('Code copied to clipboard!'); }} className="text-gray-500 hover:text-white transition-colors" title="Copy Code">
+                     <Copy className="w-4 h-4" />
+                   </button>
+                 </div>
+               )}
             </div>
           </div>
           <button onClick={() => setView('main')} className="bg-red-900/40 text-red-400 hover:bg-red-900/60 px-4 py-2 rounded-lg transition-colors border border-red-900/50 h-fit">
@@ -183,7 +178,7 @@ export default function MultiplayerLobby() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
           <div className="bg-gray-900 border border-gray-800 p-6 rounded-2xl max-h-[500px] overflow-y-auto">
             <h3 className="text-xl font-bold text-gray-300 mb-4 border-b border-gray-800 pb-2 flex justify-between">
-              <span>Players (3)</span>
+              <span>Players (1)</span>
               <span className="text-sm font-normal text-fuchsia-400 bg-fuchsia-400/10 px-2 py-0.5 rounded cursor-pointer hover:bg-fuchsia-400/20">Group Stats</span>
             </h3>
             <ul className="space-y-3">
@@ -194,23 +189,18 @@ export default function MultiplayerLobby() {
                 <div className="flex items-center gap-3"><div className="w-2 h-2 bg-green-500 rounded-full"></div> <span className="text-white font-medium">You (Host)</span></div>
                 <Trophy className="w-4 h-4 text-gray-500" />
               </li>
-              <li 
-                onClick={() => { setSelectedUser('1'); setView('userProfile'); }}
-                className="flex justify-between items-center bg-gray-800/50 hover:bg-gray-800 p-3 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-gray-700"
-              >
-                <div className="flex items-center gap-3"><div className="w-2 h-2 bg-green-500 rounded-full"></div> <span className="text-gray-300">Alice</span></div>
-                <Trophy className="w-4 h-4 text-yellow-400" />
-              </li>
             </ul>
           </div>
           <div className="flex flex-col gap-6">
+            {lobbyType === 'private' && (
             <div className="bg-gray-900 border border-gray-800 p-6 rounded-2xl flex flex-col items-center text-center">
                <h3 className="text-lg font-bold text-white mb-2">Invite Others</h3>
                <p className="text-sm text-gray-400 mb-4">Share your lobby code so others can join this private space.</p>
-               <button className="bg-gray-800 hover:bg-gray-700 text-white w-full py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2 border border-gray-700">
+               <button onClick={() => { navigator.clipboard.writeText('X7Y9Z1'); alert('Code copied to clipboard!'); }} className="bg-gray-800 hover:bg-gray-700 text-white w-full py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2 border border-gray-700">
                  <Copy className="w-4 h-4" /> Share Code
                </button>
             </div>
+            )}
 
             <div className="bg-fuchsia-900/20 border border-fuchsia-900/50 p-6 rounded-2xl flex flex-col items-center text-center">
               <Swords className="w-10 h-10 text-fuchsia-400 mb-2" />
