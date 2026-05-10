@@ -10,8 +10,8 @@ export const generateQuestions = async (subjectContext) => {
   }
 
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-pro"
-  });
+    model: "gemini-1.5-flash"
+  }, { apiVersion: 'v1' });
 
   const prompt = `You are an expert ICT teacher. Generate a completely unique and challenging 10-question multiple choice quiz for the subject: ${subjectContext}. 
 Respond strictly in a JSON array format.

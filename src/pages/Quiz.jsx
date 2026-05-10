@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Clock, ArrowRight, Loader } from 'lucide-react';
 import { generateQuestions } from '../lib/gemini';
+import { generateGroqQuestions } from '../lib/groq';
 
 export default function Quiz() {
   const { subjectId } = useParams();
@@ -16,9 +17,19 @@ export default function Quiz() {
   useEffect(() => {
     const fetchQ = async () => {
       try {
-        const generated = await generateQuestions(subjectId || 'general ICT');
-        setQuestions(generated);
+        // Try Groq First (Faster, higher rate limits)
+        try {
+          console.log("Attempting to generate questions via Groq...");
+          const generated = await generateGroqQuestions(subjectId || 'general ICT');
+          setQuestions(generated);
+        } catch (groqError) {
+          console.warn("Groq failed, falling back to Gemini:", groqError);
+          // Fallback to Gemini
+          const generated = await generateQuestions(subjectId || 'general ICT');
+          setQuestions(generated);
+        }
       } catch (e) {
+        console.error("All AI generation failed:", e);
         alert(e.message || "failed to load questions. Returning to home.");
         navigate('/');
       }
