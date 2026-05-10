@@ -43,7 +43,8 @@ export default function Auth() {
         alert('Success! Please verify your email to log in (if email confirmations are enabled on your Supabase project).');
       }
     } catch (err) {
-      setError(err.message);
+      console.error('Authentication error:', err);
+      setError(err.message || 'An unexpected error occurred during authentication.');
     } finally {
       setLoading(false);
     }
