@@ -19,7 +19,7 @@ export default function Quiz() {
         const generated = await generateQuestions(subjectId || 'general ICT');
         setQuestions(generated);
       } catch (e) {
-        alert("failed to load questions. Returning to home.");
+        alert(e.message || "failed to load questions. Returning to home.");
         navigate('/');
       }
       setIsLoading(false);
