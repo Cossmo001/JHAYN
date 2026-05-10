@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Subjects from './pages/Subjects'
 import Quiz from './pages/Quiz'
@@ -47,8 +47,10 @@ function Navbar() {
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
+  const location = useLocation();
+  
   if (!user) {
-    return <Navigate to="/auth" />;
+    return <Navigate to="/auth" state={{ from: location }} replace />;
   }
   return children;
 }
